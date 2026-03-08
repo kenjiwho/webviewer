@@ -1,6 +1,4 @@
 const std = @import("std");
-const Allocator = std.mem.Allocator;
-const clap = @import("clap");
 const ArgParse = @import("ArgParse.zig");
 const App = @import("App.zig");
 

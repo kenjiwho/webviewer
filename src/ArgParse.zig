@@ -1,7 +1,8 @@
-const std = @import("std");
-const clap = @import("clap");
-const Allocator = std.mem.Allocator;
 const ArgParse = @This();
+
+const std = @import("std");
+const Allocator = std.mem.Allocator;
+const clap = @import("clap");
 
 pub const Args = struct {
     url: [:0]u8,
