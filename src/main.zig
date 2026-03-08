@@ -21,6 +21,8 @@ pub fn main() !void {
 
     const args = try arg_parser.parse();
 
-    const app = App.init(args);
+    const app = try App.init(args);
+    defer app.deinit();
+
     try app.run();
 }
