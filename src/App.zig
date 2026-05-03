@@ -29,10 +29,10 @@ fn initKeybinds(w: WebView) !void {
         \\(function() {
         \\    function performScroll(amount) {
         \\        // Try window and scrolling element
-        \\        window.scrollBy({top: amount, behavior: 'smooth'});
+        \\        window.scrollBy({top: amount, behavior: 'instant'});
         \\        const scroller = document.scrollingElement || document.documentElement || document.body;
         \\        if (scroller && scroller !== window) {
-        \\            scroller.scrollBy({top: amount, behavior: 'smooth'});
+        \\            scroller.scrollBy({top: amount, behavior: 'instant'});
         \\        }
         \\
         \\        // Fallback: Search for any element with overflow
@@ -41,7 +41,27 @@ fn initKeybinds(w: WebView) !void {
         \\            const el = all[i];
         \\            const style = window.getComputedStyle(el);
         \\            if ((style.overflowY === 'auto' || style.overflowY === 'scroll') && el.scrollHeight > el.clientHeight) {
-        \\                el.scrollBy({top: amount, behavior: 'smooth'});
+        \\                el.scrollBy({top: amount, behavior: 'instant'});
+        \\            }
+        \\        }
+        \\    }
+        \\
+        \\    function performScrollAbs(toBottom) {
+        \\        const loc = toBottom ? 100000000 : 0;
+        \\        // Try window and scrolling element
+        \\        window.scrollTo(0, loc);
+        \\        const scroller = document.scrollingElement || document.documentElement || document.body;
+        \\        if (scroller && scroller !== window) {
+        \\            scroller.scrollTo(0, loc);
+        \\        }
+        \\
+        \\        // Fallback: Search for any element with overflow
+        \\        const all = document.querySelectorAll('div, section, article');
+        \\        for (let i = 0; i < all.length; i++) {
+        \\            const el = all[i];
+        \\            const style = window.getComputedStyle(el);
+        \\            if ((style.overflowY === 'auto' || style.overflowY === 'scroll') && el.scrollHeight > el.clientHeight) {
+        \\                el.scrollTo(0, loc);
         \\            }
         \\        }
         \\    }
@@ -66,6 +86,12 @@ fn initKeybinds(w: WebView) !void {
         \\            handled = true;
         \\        } else if (key === 'u' && e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) {
         \\            performScroll(-scrollAmount);
+        \\            handled = true;
+        \\        } else if (key === 'g' && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) {
+        \\            performScrollAbs(false);
+        \\            handled = true;
+        \\        } else if (key === 'g' && !e.ctrlKey && !e.metaKey && !e.altKey && e.shiftKey) {
+        \\            performScrollAbs(true);
         \\            handled = true;
         \\        }
         \\
